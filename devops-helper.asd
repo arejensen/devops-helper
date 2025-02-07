@@ -11,4 +11,6 @@
   :build-pathname "devops-helper"
   :entry-point "devops-helper:main"
   :components ((:file "package")
+               (:file "environment-variables")
+               (:file "queries")
                (:file "devops-helper")))

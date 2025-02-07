@@ -1,26 +1,5 @@
-(ql:quickload 'drakma)
-(ql:quickload 'cl-json)
-(ql:quickload 'cl-env)
-
 ;;;; devops-helper.lisp
 (in-package #:devops-helper)
-
-;;; Configuration parameters
-(cl-env:init "config.env")
-(defparameter *organization* (cl-env:getenv "DEVOPS_ORGANIZATION"))
-(defparameter *pat* (cl-env:getenv "DEVOPS_USER_PAT"))
-(defparameter *user-email* (cl-env:getenv "DEVOPS_USER_EMAIL"))
-(defparameter *api-version* "7.1")
-
-(defparameter *wiql-query*
-  (format nil "SELECT [System.Id]
-               FROM WorkItems
-               WHERE [System.WorkItemType] IN ('Task', 'Bug', 'Product Backlog Item')
-                   AND [System.ChangedBy] = '~A'
-                   AND [System.State] != 'Removed'
-               ORDER BY [System.ChangedDate] DESC"
-          *user-email*)
-  "WIQL (Work Item Query Language) query. WIQL is a sql-ish query language for querying work items in devops.")
 
 (defun azure-wiql-query (wiql)
   "Send the WIQL query to Azure DevOps and return the response as a string."
@@ -36,9 +15,22 @@
 
 (defun get-work-item-refs ()
   "Run the WIQL query and return the list of work item references."
-  (let* ((response (azure-wiql-query *wiql-query*))
+  (let* ((response (azure-wiql-query *wiql-query-all-work-items*))
          (json (cl-json:decode-json-from-string response)))
         (cdr (assoc :WORK-ITEMS json))))
+
+(defun update-work-item-state (id state)
+  "Updates worktask with ID to state STATE."
+  (let ((url (format nil "https://dev.azure.com/~A/~A/_apis/wit/workitems/~A?api-version=~A"
+                     *organization* *organization* id *api-version*))
+        (patch-content (print (cl-json:encode-json-to-string `(((op . "add")
+                                                                (path . "/fields/System.State")
+                                                                (value . ,state)))))))
+    (drakma:http-request url
+                         :basic-authorization `(,*user-email* ,*pat*)
+                         :method :patch
+                         :content patch-content
+                         :content-type "application/json-patch+json")))
 
 (defun extract-ids (refs)
   "Extract the list of IDs from the work item references."
@@ -54,19 +46,19 @@
       (drakma:http-request url :basic-authorization `(,*user-email* ,*pat*))))))
 
 (defun extract-work-item-title (work-item)
-  "Return a work item's title"
+  "Return a work item's title."
   (assoc :*SYSTEM.*TITLE (cdr (assoc :FIELDS work-item))))
 
 (defun extract-work-item-type (work-item)
-  "Return a work item's type"
+  "Return a work item's type."
   (assoc :*SYSTEM.*WORK-ITEM-TYPE (cdr (assoc :FIELDS work-item))))
 
 (defun extract-work-item-id (work-item)
-  "Return a work item's id"
+  "Return a work item's id."
   (assoc :ID work-item))
 
 (defun extract-work-items (work-items)
-  "Return all work items"
+  "Return all work items."
   (let ((work-items (cdr (assoc :VALUE work-items))))
     (mapcar #'list (mapcar #'extract-work-item-id work-items)
                    (mapcar #'extract-work-item-title work-items)
