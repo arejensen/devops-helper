@@ -13,4 +13,6 @@
   :components ((:file "package")
                (:file "environment-variables")
                (:file "queries")
+               (:file "get-work-items")
+               (:file "update-work-items")
                (:file "devops-helper")))
