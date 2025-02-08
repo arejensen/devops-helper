@@ -5,7 +5,7 @@
   :author "Are Jensen"
   :license  "MIT"
   :version "0.0.1"
-  :depends-on (:drakma :cl-json :cl-env)
+  :depends-on (:drakma :cl-json :cl-env :clingon)
   :serial t
   :build-operation "program-op"
   :build-pathname "devops-helper"
@@ -15,4 +15,6 @@
                (:file "queries")
                (:file "get-work-items")
                (:file "update-work-items")
+               (:file "command-line/get-latest")
+               (:file "command-line/set-state")
                (:file "devops-helper")))

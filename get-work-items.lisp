@@ -48,7 +48,7 @@ CHARS-TO-STRIP can be any sequence of characters."
 
 (defun transform-title (title)
   "Converts TITLE to lowercase and replaces spaces with dashes."
-  (let ((sanitized-title (strip-chars title ":'`?!'")))
+  (let ((sanitized-title (strip-chars title ":;'`?!'")))
     (with-output-to-string (out)
       (loop for char across (string-downcase sanitized-title) do
         (write-char (if (char= char #\Space) #\- char) out)))))
