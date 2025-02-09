@@ -7,3 +7,5 @@
 (ql:quickload 'drakma)
 (ql:quickload 'cl-json)
 (ql:quickload 'cl-env)
+(ql:quickload 'cl-ppcre)
+(ql:quickload 'legit)

@@ -5,7 +5,8 @@
   "All the commands related to work items"
   (list
    (get-latest/command)
-   (set-state/command)))
+   (set-state/command)
+   (bump-tag/command)))
 
 (defun top-level/options ()
   "Returns the options for the top-level command"
