@@ -33,5 +33,6 @@
 
 (defun main ()
   "Entrypoint of devops-helper"
+  (init-config)
   (let ((app (top-level/command)))
     (clingon:run app)))

@@ -2,7 +2,7 @@
 
 (defun get-work-item-refs ()
   "run the wiql query and return the list of work item references."
-  (let* ((response (azure-wiql-query *wiql-query-all-work-items*))
+  (let* ((response (azure-wiql-query (format nil *wiql-query-all-work-items* *user-email*)q))
          (json (cl-json:decode-json-from-string response)))
     (cdr (assoc :work-items json))))
 

@@ -1,8 +1,14 @@
 (in-package #:devops-helper)
 
 ;;; Configuration parameters
-(cl-env:init "config.env")
-(defparameter *organization* (cl-env:getenv "DEVOPS_ORGANIZATION"))
-(defparameter *pat* (cl-env:getenv "DEVOPS_USER_PAT"))
-(defparameter *user-email* (cl-env:getenv "DEVOPS_USER_EMAIL"))
+(defparameter *organization* nil)
+(defparameter *pat* nil)
+(defparameter *user-email* nil)
 (defparameter *api-version* "7.1")
+
+(defun init-config ()
+  "Read environment variables from config.env at runtime."
+  (cl-env:init "config.env")
+  (setf *organization* (cl-env:getenv "DEVOPS_ORGANIZATION")
+        *pat*          (cl-env:getenv "DEVOPS_USER_PAT")
+        *user-email*   (cl-env:getenv "DEVOPS_USER_EMAIL")))
