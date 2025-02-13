@@ -16,7 +16,7 @@
                (:file "get-work-items")
                (:file "update-work-items")
                (:file "bump-tag")
-               (:file "command-line/get-latest")
+               (:file "command-line/suggest-branch-names")
                (:file "command-line/get-latest-id")
                (:file "command-line/set-state")
                (:file "command-line/bump-tag")

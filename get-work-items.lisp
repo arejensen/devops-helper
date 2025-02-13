@@ -100,7 +100,7 @@ and '*SYSTEM.*WORK-ITEM-TYPE."
 WORK-ITEM is expected to have associations for 'ID"
   (cdr (assoc :ID work-item)))
 
-(defun format-work-items (work-items)
+(defun format-branch-names (work-items)
   "Given a list of work-items, returns a list of formatted strings."
   (mapcar #'format-work-item work-items))
 
@@ -108,12 +108,12 @@ WORK-ITEM is expected to have associations for 'ID"
   "Given a list of work-items, returns a list of work item ids."
   (mapcar #'format-work-item-id work-items))
 
-(defun get-n-latest (n)
+(defun suggest-n-branch-names (n)
   "Query Azure DevOps for work items and print out suitable branch name suggestions."
   (let* ((refs (get-work-item-refs))
          (ids (extract-ids refs)))
     (let ((work-items (azure-get-work-items (subseq ids 0 n))))
-      (format-work-items (extract-work-items work-items)))))
+      (format-branch-names (extract-work-items work-items)))))
 
 (defun get-n-latest-id (n)
   "Query Azure DevOps for work items and print out their ids."
