@@ -15,7 +15,7 @@ build: $(TARGET)
 $(TARGET):
 	sbcl --no-sysinit --no-userinit \
 	     --load "$(QL)" \
-	     --eval '(ql:quickload :devops-helper)' \
+	     --eval '(ql:quickload :devops-helper :verbose t)' \
 	     --eval '(asdf:make :devops-helper)' \
 	     --quit
 
