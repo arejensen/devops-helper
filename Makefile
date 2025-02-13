@@ -24,4 +24,7 @@ clean:
 	rm -f $(TARGET)
 	find . -type f -name '*.fasl' -delete
 
+install:
+	cp $(TARGET) ~/.local/bin/
+
 rebuild: clean build
