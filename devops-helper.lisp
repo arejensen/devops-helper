@@ -5,6 +5,7 @@
   "All the commands related to work items"
   (list
    (get-latest/command)
+   (get-latest-id/command)
    (set-state/command)
    (bump-tag/command)))
 

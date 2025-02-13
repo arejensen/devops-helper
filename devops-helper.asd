@@ -17,6 +17,7 @@
                (:file "update-work-items")
                (:file "bump-tag")
                (:file "command-line/get-latest")
+               (:file "command-line/get-latest-id")
                (:file "command-line/set-state")
                (:file "command-line/bump-tag")
                (:file "devops-helper")))

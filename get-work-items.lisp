@@ -56,6 +56,11 @@ If the HTTP status code is not 200 (e.g. 403), the function logs the error
             (mapcar #'extract-work-item-title work-items)
             (mapcar #'extract-work-item-type work-items))))
 
+(defun extract-work-items-ids (work-items)
+  "Return all work items' ids."
+  (let ((work-items (cdr (assoc :VALUE work-items))))
+    (mapcar #'list (mapcar #'extract-work-item-id work-items))))
+
 (defun strip-chars (str chars-to-strip)
   "Return a new string like STR but with all characters found in CHARS-TO-STRIP removed.
 CHARS-TO-STRIP can be any sequence of characters."
@@ -90,13 +95,29 @@ and '*SYSTEM.*WORK-ITEM-TYPE."
          (formatted-title (transform-title title)))
     (format nil "~a~a-~a" prefix id formatted-title)))
 
+(defun format-work-item-id (work-item)
+  "Formats a single work-item's id (an association list) into a string.
+WORK-ITEM is expected to have associations for 'ID"
+  (cdr (assoc :ID work-item)))
+
 (defun format-work-items (work-items)
   "Given a list of work-items, returns a list of formatted strings."
   (mapcar #'format-work-item work-items))
 
+(defun format-work-items-ids (work-items)
+  "Given a list of work-items, returns a list of work item ids."
+  (mapcar #'format-work-item-id work-items))
+
 (defun get-n-latest (n)
-  "Query Azure DevOps for work items and print out their details."
+  "Query Azure DevOps for work items and print out suitable branch name suggestions."
   (let* ((refs (get-work-item-refs))
          (ids (extract-ids refs)))
     (let ((work-items (azure-get-work-items (subseq ids 0 n))))
       (format-work-items (extract-work-items work-items)))))
+
+(defun get-n-latest-id (n)
+  "Query Azure DevOps for work items and print out their ids."
+  (let* ((refs (get-work-item-refs))
+         (ids (extract-ids refs)))
+    (let ((work-items (azure-get-work-items (subseq ids 0 n))))
+      (format-work-items-ids (extract-work-items work-items)))))
