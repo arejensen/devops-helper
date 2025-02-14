@@ -12,9 +12,9 @@
   :entry-point "devops-helper:main"
   :components ((:file "package")
                (:file "environment-variables")
+               (:file "azure-calls")
                (:file "queries")
                (:file "get-work-items")
-               (:file "update-work-items")
                (:file "bump-tag")
                (:file "command-line/suggest-branch-names")
                (:file "command-line/get-latest-id")
