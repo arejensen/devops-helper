@@ -2,40 +2,13 @@
 
 (defun get-work-item-refs ()
   "run the wiql query and return the list of work item references."
-  (let* ((response (azure-wiql-query (format nil *wiql-query-all-work-items* *user-email*)))
+  (let* ((response (wiql-query (format nil *wiql-query-all-work-items* *user-email*)))
          (json (cl-json:decode-json-from-string response)))
     (cdr (assoc :work-items json))))
 
 (defun extract-ids (refs)
   "extract the list of ids from the work item references."
   (mapcar (lambda (ref) (assoc :id ref)) refs))
-
-(defun azure-get-work-items (ids)
-  "Given a list of work item ids, fetch their details from Azure DevOps.
-If the HTTP status code is not 200 (e.g. 403), the function logs the error
-(including the function name) and returns NIL."
-  (let* ((function-name "azure-get-work-items")
-         (id-string (format nil "~{~a~^,~}" (mapcar #'cdr ids)))
-         (url (format nil "https://dev.azure.com/~a/_apis/wit/workitems?ids=~a&api-version=~a"
-                      *organization* id-string *api-version*)))
-    (handler-case
-        (multiple-value-bind (body-or-stream status-code headers uri stream must-close reason-phrase)
-            (drakma:http-request url
-                                 :basic-authorization `(, *user-email* ,*pat*))
-          (declare (ignore headers uri stream must-close))
-          (if (not (eql status-code 200))
-              (progn
-                (format t "HTTP error in ~A: status code ~A, reason: ~A~%"
-                        function-name status-code reason-phrase)
-                nil)
-              (cl-json:decode-json-from-string
-               (flexi-streams:octets-to-string body-or-stream))))
-      (drakma:drakma-error (e)
-        (format t "Drakma error in ~A: ~A~%" function-name e)
-        nil)
-      (error (e)
-        (format t "Unexpected error in ~A: ~A~%" function-name e)
-        nil))))
 
 (defun extract-work-item-title (work-item)
   "Return a work item's title."
