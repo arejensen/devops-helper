@@ -93,4 +93,4 @@ WORK-ITEM is expected to have associations for 'ID"
   (let* ((refs (get-work-item-refs))
          (ids (extract-ids refs)))
     (let ((work-items (azure-get-work-items (subseq ids 0 n))))
-      (format-work-items-ids (extract-work-items work-items)))))
+      (format-work-items-ids (extract-work-items-ids work-items)))))
