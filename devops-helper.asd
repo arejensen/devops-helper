@@ -5,12 +5,13 @@
   :author "Are Jensen"
   :license  "MIT"
   :version "0.0.1"
-  :depends-on (:drakma :cl-json :cl-env :clingon :legit :trivial-open-browser)
+  :depends-on (:drakma :cl-json :cl-env :clingon :legit)
   :serial t
   :build-operation "program-op"
   :build-pathname "devops-helper"
   :entry-point "devops-helper:main"
   :components ((:file "package")
+               (:file "open-browser")
                (:file "environment-variables")
                (:file "azure-calls")
                (:file "queries")

@@ -3,7 +3,7 @@
 (defun open-pullrequest/handler (cmd)
   "Handler for the `open-pullrequest' command"
   (declare (ignore cmd))
-  (trivial-open-browser:open-browser
+  (open-url-in-browser
       (format nil "~A/pullrequestcreate?sourceRef=~A"
               (with-output-to-string (s)
                   (let ((*standard-output* s))
