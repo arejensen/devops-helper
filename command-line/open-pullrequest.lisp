@@ -1,8 +1,16 @@
 (in-package #:devops-helper)
 
 (defun open-pullrequest/handler (cmd)
-  "Handler for the `open-pullrequest' command")
-    ;;; TODO: trivial-open-browser looks promising for this
+  "Handler for the `open-pullrequest' command"
+  (declare (ignore cmd))
+  (trivial-open-browser:open-browser
+      (format nil "~A/pullrequestcreate?sourceRef=~A"
+              (with-output-to-string (s)
+                  (let ((*standard-output* s))
+                      (legit:git-config :name "remote.origin.url")))
+              (with-output-to-string (s)
+                  (let ((*standard-output* s))
+                      (legit:git-rev-parse "HEAD" :abbrev-ref :strict))))))
 
 (defun open-pullrequest/command ()
   "A command to open a pull request of the current branch"
