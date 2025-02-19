@@ -2,7 +2,7 @@
 
 (defparameter *launcher*
   #+(or win32 mswindows windows)
-  "start ~S"
+  "start ~A"
   #+(or macos darwin)
   "open ~S"
   #-(or win32 mswindows macos darwin windows)
