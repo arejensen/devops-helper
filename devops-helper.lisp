@@ -7,7 +7,8 @@
    (suggest-branch-names/command)
    (get-latest-id/command)
    (set-state/command)
-   (bump-tag/command)))
+   (bump-tag/command)
+   (open-pullrequest/command)))
 
 (defun top-level/options ()
   "Returns the options for the top-level command"

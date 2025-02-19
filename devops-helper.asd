@@ -11,6 +11,7 @@
   :build-pathname "devops-helper"
   :entry-point "devops-helper:main"
   :components ((:file "package")
+               (:file "open-browser")
                (:file "environment-variables")
                (:file "azure-calls")
                (:file "queries")
@@ -20,4 +21,5 @@
                (:file "command-line/get-latest-id")
                (:file "command-line/set-state")
                (:file "command-line/bump-tag")
+               (:file "command-line/open-pullrequest")
                (:file "devops-helper")))
